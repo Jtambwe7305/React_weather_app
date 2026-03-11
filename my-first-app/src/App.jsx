@@ -89,50 +89,34 @@ function App() {
 
   return (
     <div className="card">
-      <h1 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>SkyCast</h1>
+      <h1>SkyCast</h1>
       
-      {/* 1. MOVE THE SEARCH BOX UP so users can always see it */}
       <div className="search-box">
         <input 
           type="text" 
-          placeholder="Enter city..." 
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={handleKeyPress}
         />
         <button onClick={getWeather}>Go</button>
       </div>
-      <div className="unit-toggle">
-        <button onClick={toggleUnits}>
-          {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
-        </button>
-      </div>
-      {loading && <p style={{ marginTop: '20px' }}>Updating...</p>}
-      {error && <p style={{ color: '#ff4d4d', marginTop: '15px' }}>{error}</p>}
-
-      {/* 2. PROTECT THE WEATHER DATA. Only show this if weather is NOT null */}
-      {weather && (
-        <>
-          <div className="weather-info">
-            <h2 style={{ marginBottom: '5px' }}>
-              {weather.name} 
-              <button onClick={saveFavorite} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>❤️</button>
-            </h2>
-            <img 
-              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} 
-              alt="icon" 
-            />
-            {/* Updated this line to be dynamic */}
-            <p style={{ fontSize: '3rem', margin: '0', fontWeight: 'bold' }}>
-              {Math.round(weather.main.temp)}°{isCelsius ? 'C' : 'F'}
-            </p>
-            <p style={{ textTransform: 'capitalize', color: '#aaa' }}>
-              {weather.weather[0].description}
-            </p>
-          </div>
+  
+      <button onClick={toggleUnits}>
+        {isCelsius ? 'Switch to °F' : 'Switch to °C'}
+      </button>
+  
+      {loading && <p>Updating...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+  
+      {/* ONLY render this if weather is NOT null */}
+      {weather && !loading && (
+        <div className="weather-info">
+          <h2>{weather.name}</h2>
+          <p>{Math.round(weather.main.temp)}°{isCelsius ? 'C' : 'F'}</p>
           
-          <Forecast data={forecast} isCelsius={isCelsius} />
-        </>
+          {/* Only render Forecast if we actually have data in the array */}
+          {forecast.length > 0 && <Forecast data={forecast} isCelsius={isCelsius} />}
+        </div>
       )}
     </div>
   );
