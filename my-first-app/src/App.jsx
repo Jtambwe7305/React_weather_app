@@ -8,6 +8,7 @@ function App() {
   const [weather, setWeather] = useState(null); // Stores the API result
   const [error, setError] = useState(''); // Stores error messages
   const [loading, setLoading] = useState(false);
+  const [isCelsius, setIsCelsius] = useState(true);
 
   // Replace your old apiKey line with this:
   const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
@@ -23,30 +24,35 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    // If we already have a city searched, refresh the data with new units
+    if (weather) {
+      fetchWeatherData(`q=${weather.name}`);
+    }
+  }, [isCelsius]); // This runs every time isCelsius changes!
+
   // This helper function does the actual API calling for both Current and Forecast
   const fetchWeatherData = async (urlSuffix) => {
     setLoading(true);
     setError('');
+    
+    // Decide which unit string to send to the API
+    const unitSystem = isCelsius ? 'metric' : 'imperial';
+  
     try {
-      // 1. Get Current Weather
       const currentRes = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?${urlSuffix}&units=metric&appid=${apiKey}`
+        `https://api.openweathermap.org/data/2.5/weather?${urlSuffix}&units=${unitSystem}&appid=${apiKey}`
       );
       setWeather(currentRes.data);
-
-      // 2. Get 5-Day Forecast
+  
       const forecastRes = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast?${urlSuffix}&units=metric&appid=${apiKey}`
+        `https://api.openweathermap.org/data/2.5/forecast?${urlSuffix}&units=${unitSystem}&appid=${apiKey}`
       );
       
-      // Filter to 12:00 PM for each day
       const dailyData = forecastRes.data.list.filter(reading => reading.dt_txt.includes("12:00:00"));
       setForecast(dailyData);
-
     } catch (err) {
-      setError("Location not found or API error.");
-      setWeather(null);
-      setForecast([]);
+      setError("Error fetching data.");
     } finally {
       setLoading(false);
     }
@@ -93,7 +99,11 @@ function App() {
         />
         <button onClick={getWeather}>Go</button>
       </div>
-
+      <div className="unit-toggle">
+        <button onClick={() => setIsCelsius(!isCelsius)}>
+          Switch to {isCelsius ? 'Fahrenheit (°F)' : 'Celsius (°C)'}
+        </button>
+      </div>
       {loading && <p style={{ marginTop: '20px' }}>Updating...</p>}
       {error && <p style={{ color: '#ff4d4d', marginTop: '15px' }}>{error}</p>}
 
@@ -109,16 +119,16 @@ function App() {
               src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} 
               alt="icon" 
             />
+            {/* Updated this line to be dynamic */}
             <p style={{ fontSize: '3rem', margin: '0', fontWeight: 'bold' }}>
-              {Math.round(weather.main.temp)}°C
+              {Math.round(weather.main.temp)}°{isCelsius ? 'C' : 'F'}
             </p>
             <p style={{ textTransform: 'capitalize', color: '#aaa' }}>
               {weather.weather[0].description}
             </p>
           </div>
           
-          {/* 3. SHOW THE FORECAST HERE inside the check */}
-          <Forecast data={forecast} />
+          <Forecast data={forecast} isCelsius={isCelsius} />
         </>
       )}
     </div>
