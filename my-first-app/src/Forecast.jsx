@@ -20,8 +20,8 @@ function Forecast({ data }) {
               alt="icon" 
               style={{ width: '40px' }}
             />
-            <p style={{ fontWeight: 'bold', margin: '0' }}>
-              {Math.round(day.main.temp)}°{isCelsius ? 'C' : 'F'}
+            <p style={{ fontSize: '3rem', margin: '0', fontWeight: 'bold' }}>
+              {Math.round(weather.main.temp)}°{isCelsius ? 'C' : 'F'}
             </p>
           </div>
         ))}

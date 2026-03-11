@@ -24,20 +24,23 @@ function App() {
     });
   }, []);
 
-  useEffect(() => {
-    // If we already have a city searched, refresh the data with new units
+  const toggleUnits = () => {
+    const newUnitSetting = !isCelsius; // Calculate the next state
+    setIsCelsius(newUnitSetting);     // Update the state for the UI
+  
+    // If there's already a city showing, refresh it with the new unit
     if (weather) {
-      fetchWeatherData(`q=${weather.name}`);
+      fetchWeatherData(`q=${weather.name}`, newUnitSetting);
     }
-  }, [isCelsius]); // This runs every time isCelsius changes!
+  };
 
   // This helper function does the actual API calling for both Current and Forecast
-  const fetchWeatherData = async (urlSuffix) => {
+  const fetchWeatherData = async (urlSuffix, forcedUnit = isCelsius) => {
     setLoading(true);
     setError('');
     
     // Decide which unit string to send to the API
-    const unitSystem = isCelsius ? 'metric' : 'imperial';
+    const unitSystem = forcedUnit ? 'metric' : 'imperial';
   
     try {
       const currentRes = await axios.get(
@@ -100,8 +103,8 @@ function App() {
         <button onClick={getWeather}>Go</button>
       </div>
       <div className="unit-toggle">
-        <button onClick={() => setIsCelsius(!isCelsius)}>
-          Switch to {isCelsius ? 'Fahrenheit (°F)' : 'Celsius (°C)'}
+        <button onClick={toggleUnits}>
+          {isCelsius ? 'Switch to Fahrenheit' : 'Switch to Celsius'}
         </button>
       </div>
       {loading && <p style={{ marginTop: '20px' }}>Updating...</p>}
