@@ -15,14 +15,15 @@ body {
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  width: 350px;
+  width: 550px; /* Changed from 350px to 550px */
   text-align: center;
+  transition: width 0.3s ease; /* Smooth transition when resizing */
 }
 
 input {
@@ -55,4 +56,59 @@ button {
 button:hover {
   transform: scale(1.05);
   background: #4895ef;
+}
+
+/* Container for the 5 days */
+.forecast-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap; /* This makes it look good on mobile too! */
+}
+
+/* Individual day cards */
+.forecast-item {
+  background: rgba(255, 255, 255, 0.1); /* Subtle white overlay */
+  padding: 15px;
+  border-radius: 12px;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(5px); /* Blurs the background behind the card */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s;
+}
+
+.forecast-item:hover {
+  transform: translateY(-5px); /* Little lift effect when you hover */
+}
+
+/* Make the "Switch" button look like a real toggle */
+.unit-toggle button {
+  background-color: #00d2ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+/* Add this to the bottom of App.css */
+.current-temp {
+  font-size: 5rem;    /* Significantly larger than the rest */
+  font-weight: 800;    /* Extra bold */
+  margin: 20px 0;      /* Adds space above and below */
+  color: #ffffff;
+  display: block;      /* Ensures it takes its own line */
+}
+
+/* Optional: Make the city name a bit bigger too */
+.weather-info h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 5px;
 }

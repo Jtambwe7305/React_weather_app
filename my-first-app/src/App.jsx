@@ -101,9 +101,11 @@ function App() {
         <button onClick={getWeather}>Go</button>
       </div>
   
-      <button onClick={toggleUnits}>
-        {isCelsius ? 'Switch to °F' : 'Switch to °C'}
-      </button>
+      <div className="unit-toggle">
+        <button onClick={toggleUnits}>
+          {isCelsius ? 'Switch to °F' : 'Switch to °C'}
+        </button>
+      </div>
   
       {loading && <p>Updating...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -112,10 +114,21 @@ function App() {
       {weather && !loading && (
         <div className="weather-info">
           <h2>{weather.name}</h2>
-          <p>{Math.round(weather.main.temp)}°{isCelsius ? 'C' : 'F'}</p>
+          <p className="current-temp">
+            {Math.round(weather.main.temp)}°{isCelsius ? 'C' : 'F'}
+          </p>
+
+          <p style={{ textTransform: 'capitalize', color: '#aaa' }}>
+            {weather.weather[0].description}
+          </p>
           
-          {/* Only render Forecast if we actually have data in the array */}
-          {forecast.length > 0 && <Forecast data={forecast} isCelsius={isCelsius} />}
+          {/* Only render this entire section if we actually have data */}
+          {forecast.length > 0 && (
+            <div className="forecast-section">
+              <h3 style={{ marginTop: '20px', marginBottom: '10px' }}>5-Day Forecast</h3>
+              <Forecast data={forecast} isCelsius={isCelsius} />
+            </div>
+          )}
         </div>
       )}
     </div>
