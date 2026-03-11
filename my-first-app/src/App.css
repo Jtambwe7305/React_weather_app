@@ -19,11 +19,14 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 40px;
+  padding: 20px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  width: 550px; /* Changed from 350px to 550px */
+  box-sizing: border-box;
+  width: 90%; /* Changed from 350px to 550px */
   text-align: center;
   transition: width 0.3s ease; /* Smooth transition when resizing */
+  max-width: 550px;
+
 }
 
 input {
@@ -64,6 +67,9 @@ button:hover {
   justify-content: space-around;
   gap: 15px;
   margin-top: 30px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
   flex-wrap: wrap; /* This makes it look good on mobile too! */
 }
 
@@ -79,6 +85,7 @@ button:hover {
   backdrop-filter: blur(5px); /* Blurs the background behind the card */
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.2s;
+  flex: 0 0 100px;
 }
 
 .forecast-item:hover {
@@ -111,4 +118,26 @@ button:hover {
   font-size: 2.5rem;
   font-weight: 600;
   margin-bottom: 5px;
+}
+
+@media (max-width: 480px) {
+  .search-box {
+    display: flex;
+    flex-direction: column; /* Stacks input and button */
+    gap: 10px;
+  }
+  
+  input {
+    width: 100%; /* Take full width on mobile */
+    margin: 0;
+  }
+  
+  button {
+    margin: 0;
+    width: 100%;
+  }
+
+  .current-temp {
+    font-size: 4rem; /* Slightly smaller for mobile screens */
+  }
 }
