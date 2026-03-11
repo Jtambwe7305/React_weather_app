@@ -81,10 +81,8 @@ function App() {
   return (
     <div className="card">
       <h1 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>SkyCast</h1>
-      <h2>
-        {weather.name} 
-        <button onClick={saveFavorite} style={{ background: 'none', cursor: 'pointer' }}>❤️</button>
-      </h2>
+      
+      {/* 1. MOVE THE SEARCH BOX UP so users can always see it */}
       <div className="search-box">
         <input 
           type="text" 
@@ -95,26 +93,34 @@ function App() {
         />
         <button onClick={getWeather}>Go</button>
       </div>
-  
+
       {loading && <p style={{ marginTop: '20px' }}>Updating...</p>}
       {error && <p style={{ color: '#ff4d4d', marginTop: '15px' }}>{error}</p>}
-  
+
+      {/* 2. PROTECT THE WEATHER DATA. Only show this if weather is NOT null */}
       {weather && (
-        <div className="weather-info">
-          <h2 style={{ marginBottom: '5px' }}>{weather.name}</h2>
-          <img 
-            src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} 
-            alt="icon" 
-          />
-          <p style={{ fontSize: '3rem', margin: '0', fontWeight: 'bold' }}>
-            {Math.round(weather.main.temp)}°C
-          </p>
-          <p style={{ textTransform: 'capitalize', color: '#aaa' }}>
-            {weather.weather[0].description}
-          </p>
-        </div>
+        <>
+          <div className="weather-info">
+            <h2 style={{ marginBottom: '5px' }}>
+              {weather.name} 
+              <button onClick={saveFavorite} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>❤️</button>
+            </h2>
+            <img 
+              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@4x.png`} 
+              alt="icon" 
+            />
+            <p style={{ fontSize: '3rem', margin: '0', fontWeight: 'bold' }}>
+              {Math.round(weather.main.temp)}°C
+            </p>
+            <p style={{ textTransform: 'capitalize', color: '#aaa' }}>
+              {weather.weather[0].description}
+            </p>
+          </div>
+          
+          {/* 3. SHOW THE FORECAST HERE inside the check */}
+          <Forecast data={forecast} />
+        </>
       )}
-      <Forecast data={forecast} />
     </div>
   );
 }
