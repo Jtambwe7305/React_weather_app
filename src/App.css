@@ -14,12 +14,6 @@ body {
   color: #ffffff;
 }
 
-h1 {
-  /* This means: minimum size 1.5rem, preferred size 5vw (scales with screen), max size 2.5rem */
-  font-size: clamp(1.5rem, 5vw, 2.5rem); 
-  text-align: center;
-}
-
 .card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
