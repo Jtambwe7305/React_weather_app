@@ -22,7 +22,7 @@ body {
   padding: 30px;       /* Reduced padding for mobile */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   width: 90%;          /* Take up 90% of the screen width */
-  max-width: 400px;    /* But never get wider than 500px on desktop */
+  max-width: 500px;    /* But never get wider than 500px on desktop */
   text-align: center;
   box-sizing: border-box; /* Crucial: keeps padding from breaking width */
 }
@@ -123,13 +123,19 @@ button:hover {
   margin-bottom: 5px;
 }
 
-@media (max-width: 400px) {
+h1 {
+  word-wrap: break-word; /* Forces long words to break instead of overflowing */
+  text-align: center;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
   .current-temp {
     font-size: 3.5rem; /* Shrink the big number slightly so it doesn't wrap */
   }
   
   h1 {
-    font-size: 1.5rem;
+    font-size: 24px;
   }
   
   .search-box {
