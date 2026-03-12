@@ -19,10 +19,10 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 20px;       /* Reduced padding for mobile */
+  padding: 30px;       /* Reduced padding for mobile */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   width: 90%;          /* Take up 90% of the screen width */
-  max-width: 500px;    /* But never get wider than 500px on desktop */
+  max-width: 400px;    /* But never get wider than 500px on desktop */
   text-align: center;
   box-sizing: border-box; /* Crucial: keeps padding from breaking width */
 }

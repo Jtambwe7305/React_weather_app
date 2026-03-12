@@ -89,7 +89,7 @@ function App() {
 
   return (
     <div className="card">
-      <h1>WeatherApp </h1>
+      <h1>Weather App</h1>
       
       <div className="search-box">
         <input 
