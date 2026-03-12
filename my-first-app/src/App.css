@@ -19,14 +19,12 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 20px;
+  padding: 20px;       /* Reduced padding for mobile */
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  box-sizing: border-box;
-  width: 90%; /* Changed from 350px to 550px */
+  width: 90%;          /* Take up 90% of the screen width */
+  max-width: 500px;    /* But never get wider than 500px on desktop */
   text-align: center;
-  transition: width 0.3s ease; /* Smooth transition when resizing */
-  max-width: 550px;
-
+  box-sizing: border-box; /* Crucial: keeps padding from breaking width */
 }
 
 input {
@@ -65,18 +63,19 @@ button:hover {
 .forecast-container {
   display: flex;
   justify-content: space-around;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 10px;
+  margin-top: 20px;
   overflow-x: auto;
   padding-bottom: 10px;
   -webkit-overflow-scrolling: touch;
   flex-wrap: wrap; /* This makes it look good on mobile too! */
+  scrollbar-width: none;
 }
 
 /* Individual day cards */
 .forecast-item {
   background: rgba(255, 255, 255, 0.1); /* Subtle white overlay */
-  padding: 15px;
+  padding: 10px;
   border-radius: 12px;
   min-width: 80px;
   display: flex;
@@ -85,7 +84,11 @@ button:hover {
   backdrop-filter: blur(5px); /* Blurs the background behind the card */
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.2s;
-  flex: 0 0 100px;
+  flex: 0 0 90px;
+}
+
+.forecast-container::-webkit-scrollbar{
+  display: none;
 }
 
 .forecast-item:hover {
@@ -120,24 +123,23 @@ button:hover {
   margin-bottom: 5px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 400px) {
+  .current-temp {
+    font-size: 3.5rem; /* Shrink the big number slightly so it doesn't wrap */
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
   .search-box {
     display: flex;
-    flex-direction: column; /* Stacks input and button */
+    flex-direction: column; /* Stacks input and button vertically */
     gap: 10px;
   }
   
-  input {
-    width: 100%; /* Take full width on mobile */
+  input, button {
+    width: 100%; /* Makes search bar full width on mobile */
     margin: 0;
-  }
-  
-  button {
-    margin: 0;
-    width: 100%;
-  }
-
-  .current-temp {
-    font-size: 4rem; /* Slightly smaller for mobile screens */
   }
 }
