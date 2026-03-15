@@ -28,12 +28,12 @@ function App() {
   }, []);
 
   const toggleUnits = () => {
-    const newUnitSetting = !isCelsius; // Calculate the next state
-    setIsCelsius(newUnitSetting);     // Update the state for the UI
+    const newUnitSetting = !isCelsius; 
+    setIsCelsius(newUnitSetting);     
   
-    // If there's already a city showing, refresh it with the new unit
+    // If there's already a city showing, refresh it using its EXACT coordinates
     if (weather) {
-      fetchWeatherData(`q=${weather.name}`, newUnitSetting);
+      fetchWeatherData(`lat=${weather.coord.lat}&lon=${weather.coord.lon}`, newUnitSetting);
     }
   };
 
@@ -68,10 +68,17 @@ function App() {
 
   // Trigger 1: When user clicks the button or hits Enter
   const getWeather = () => {
+    // 1. If they typed a city AND selected a state (US Cities)
     if (city && selectedState) {
-      fetchWeatherData(`q=${city},${selectedState.value}`);
-    } else {
-      setError("Please enter a city and select a state.");
+      fetchWeatherData(`q=${city},${selectedState.value},US`);
+    } 
+    // 2. If they ONLY typed a city (International Cities)
+    else if (city) {
+      fetchWeatherData(`q=${city}`);
+    } 
+    // 3. If they clicked Go without typing anything
+    else {
+      setError("Please enter a city name.");
     }
   };
 
