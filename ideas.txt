@@ -1,0 +1,4 @@
+- Add icons for weather on main temperature reading
+- highs and lows
+- weather throughout the day (change in temperature)
+- dynamic background 
