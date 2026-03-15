@@ -1,16 +1,15 @@
-import { useState, useEffect } from 'react'; // Add useEffect here
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 import Forecast from './Forecast';
 
 function App() {
-  const [city, setCity] = useState(''); // Stores what the user types
-  const [weather, setWeather] = useState(null); // Stores the API result
-  const [error, setError] = useState(''); // Stores error messages
+  const [city, setCity] = useState(''); 
+  const [weather, setWeather] = useState(null); 
+  const [error, setError] = useState(''); 
   const [loading, setLoading] = useState(false);
   const [isCelsius, setIsCelsius] = useState(true);
 
-  // Replace your old apiKey line with this:
   const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
   const [forecast, setForecast] = useState([]);
@@ -28,18 +27,15 @@ function App() {
     const newUnitSetting = !isCelsius; 
     setIsCelsius(newUnitSetting);     
   
-    // If there's already a city showing, refresh it using its EXACT coordinates
     if (weather) {
       fetchWeatherData(`lat=${weather.coord.lat}&lon=${weather.coord.lon}`, newUnitSetting);
     }
   };
 
-  // This helper function does the actual API calling for both Current and Forecast
   const fetchWeatherData = async (urlSuffix, forcedUnit = isCelsius) => {
     setLoading(true);
     setError('');
     
-    // Decide which unit string to send to the API
     const unitSystem = forcedUnit ? 'metric' : 'imperial';
   
     try {
@@ -61,20 +57,14 @@ function App() {
     }
   };
 
-  // --- NOW THE TWO TRIGGERS ---
+  const getWeather = () => {
+    if (city.trim() !== '') {
+      fetchWeatherData(`q=${city}`);
+    } else {
+      setError("Please enter a location (e.g., Rochester, NY, US)");
+    }
+  };
 
-
-// Trigger 1: When user clicks the button or hits Enter
-const getWeather = () => {
-  if (city.trim() !== '') {
-    // Just send the raw string the user typed!
-    fetchWeatherData(`q=${city}`);
-  } else {
-    setError("Please enter a location (e.g., Rochester, NY, US)");
-  }
-};
-
-  // Trigger 2: When the app auto-detects location
   const fetchWeatherByCoords = (lat, lon) => {
     fetchWeatherData(`lat=${lat}&lon=${lon}`);
   };
@@ -97,13 +87,14 @@ const getWeather = () => {
     <div className="card">
       <h1>Weather App</h1>
       
+      {/* Notice the <Select /> component is completely gone from here! */}
       <div className="search-box">
         <input 
           type="text" 
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder='e.g., City, State, Country'
+          placeholder='e.g., Rochester, NY, US'
         />
         <button onClick={getWeather}>Go</button>
       </div>
@@ -117,7 +108,6 @@ const getWeather = () => {
       {loading && <p>Updating...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
   
-      {/* ONLY render this if weather is NOT null */}
       {weather && !loading && (
         <div className="weather-info">
           <h2>{weather.name}</h2>
@@ -129,7 +119,6 @@ const getWeather = () => {
             {weather.weather[0].description}
           </p>
           
-          {/* Only render this entire section if we actually have data */}
           {weather && forecast.length > 0 && (
             <div className="forecast-section">
               <h3 style={{ marginTop: '20px', marginBottom: '10px' }}>5-Day Forecast</h3>
