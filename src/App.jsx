@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react'; // Add useEffect here
 import axios from 'axios';
 import './App.css';
-import Select from 'react-select';
 import Forecast from './Forecast';
 
-import {states} from './data';
 function App() {
   const [city, setCity] = useState(''); // Stores what the user types
   const [weather, setWeather] = useState(null); // Stores the API result
@@ -20,7 +18,6 @@ function App() {
     JSON.parse(localStorage.getItem('weatherFavorites')) || []
   );
 
-  const [selectedState, setSelectedState] = useState(null);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       fetchWeatherByCoords(position.coords.latitude, position.coords.longitude);
@@ -66,20 +63,14 @@ function App() {
 
   // --- NOW THE TWO TRIGGERS ---
 
-  // Trigger 1: When user clicks the button or hits Enter
+
 // Trigger 1: When user clicks the button or hits Enter
 const getWeather = () => {
-  // 1. If they typed a city AND selected a state (US Cities)
-  if (city && selectedState) {
-    fetchWeatherData(`q=${city},${selectedState.value},US`);
-  } 
-  // 2. If they ONLY typed a city (International Cities)
-  else if (city) {
+  if (city.trim() !== '') {
+    // Just send the raw string the user typed!
     fetchWeatherData(`q=${city}`);
-  } 
-  // 3. If they clicked Go without typing anything
-  else {
-    setError("Please enter a city name.");
+  } else {
+    setError("Please enter a location (e.g., Rochester, NY, US)");
   }
 };
 
@@ -112,17 +103,8 @@ const getWeather = () => {
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder='Enter city'
-          />
-          <Select 
-            className="basic-single"
-            classNamePrefix="select"
-            defaultValue={selectedState}
-            onChange={setSelectedState}
-            options={states}
-            placeholder="Select a state"
-            isClearable={true}
-          />
+          placeholder='e.g., City, State, Country'
+        />
         <button onClick={getWeather}>Go</button>
       </div>
   
