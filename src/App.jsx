@@ -94,7 +94,7 @@ function App() {
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder='e.g., Rochester, NY, US'
+          placeholder='e.g., enter your city, state, country'
         />
         <button onClick={getWeather}>Go</button>
       </div>
