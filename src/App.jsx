@@ -67,20 +67,21 @@ function App() {
   // --- NOW THE TWO TRIGGERS ---
 
   // Trigger 1: When user clicks the button or hits Enter
-  const getWeather = () => {
-    // 1. If they typed a city AND selected a state (US Cities)
-    if (city && selectedState) {
-      fetchWeatherData(`q=${city},${selectedState.value},US`);
-    } 
-    // 2. If they ONLY typed a city (International Cities)
-    else if (city) {
-      fetchWeatherData(`q=${city}`);
-    } 
-    // 3. If they clicked Go without typing anything
-    else {
-      setError("Please enter a city name.");
-    }
-  };
+// Trigger 1: When user clicks the button or hits Enter
+const getWeather = () => {
+  // 1. If they typed a city AND selected a state (US Cities)
+  if (city && selectedState) {
+    fetchWeatherData(`q=${city},${selectedState.value},US`);
+  } 
+  // 2. If they ONLY typed a city (International Cities)
+  else if (city) {
+    fetchWeatherData(`q=${city}`);
+  } 
+  // 3. If they clicked Go without typing anything
+  else {
+    setError("Please enter a city name.");
+  }
+};
 
   // Trigger 2: When the app auto-detects location
   const fetchWeatherByCoords = (lat, lon) => {
