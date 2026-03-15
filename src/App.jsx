@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'; // Add useEffect here
 import axios from 'axios';
 import './App.css';
+import Select from 'react-select';
 import Forecast from './Forecast';
 
+import {states} from './data';
 function App() {
   const [city, setCity] = useState(''); // Stores what the user types
   const [weather, setWeather] = useState(null); // Stores the API result
@@ -18,6 +20,7 @@ function App() {
     JSON.parse(localStorage.getItem('weatherFavorites')) || []
   );
 
+  const [selectedState, setSelectedState] = useState(null);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       fetchWeatherByCoords(position.coords.latitude, position.coords.longitude);
@@ -65,7 +68,11 @@ function App() {
 
   // Trigger 1: When user clicks the button or hits Enter
   const getWeather = () => {
-    if (city) fetchWeatherData(`q=${city}`);
+    if (city && selectedState) {
+      fetchWeatherData(`q=${city},${selectedState.value}`);
+    } else {
+      setError("Please enter a city and select a state.");
+    }
   };
 
   // Trigger 2: When the app auto-detects location
@@ -97,7 +104,17 @@ function App() {
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={handleKeyPress}
-        />
+          placeholder='Enter city'
+          />
+          <Select 
+            className="basic-single"
+            classNamePrefix="select"
+            defaultValue={selectedState}
+            onChange={setSelectedState}
+            options={states}
+            placeholder="Select a state"
+            isClearable={true}
+          />
         <button onClick={getWeather}>Go</button>
       </div>
   
@@ -123,7 +140,7 @@ function App() {
           </p>
           
           {/* Only render this entire section if we actually have data */}
-          {forecast.length > 0 && (
+          {weather && forecast.length > 0 && (
             <div className="forecast-section">
               <h3 style={{ marginTop: '20px', marginBottom: '10px' }}>5-Day Forecast</h3>
               <Forecast data={forecast} isCelsius={isCelsius} />
