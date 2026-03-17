@@ -9,6 +9,7 @@ function App() {
   const [error, setError] = useState(''); 
   const [loading, setLoading] = useState(false);
   const [isCelsius, setIsCelsius] = useState(true);
+  // add a variable for high and lows
 
   const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 
